@@ -140,7 +140,12 @@
     .vocab-tdj         { grid-template-columns: 1fr 1fr !important; gap: 6px !important; }
     .word-grid         { grid-template-columns: 1fr 1fr !important; gap: 6px !important; }
     .programme-grid    { grid-template-columns: repeat(5, 1fr) !important; gap: 5px !important; }
-    .presence-grid     { grid-template-columns: repeat(5, 1fr) !important; gap: 6px !important; }
+    .presence-grid     { grid-template-columns: repeat(5, 1fr) !important; gap: 8px !important; }
+    .presence-cell     { padding: 8px 6px !important; gap: 4px !important; }
+    .presence-num      { font-size: 18pt !important; }
+    .presence-label    { font-size: 7pt !important; }
+    .presence-check    { width: 26px !important; height: 26px !important; }
+    .presence-sig      { font-size: 7.5pt !important; padding-top: 4px !important; }
 
     /* 12 ─ Overflow : tout contenu dans sa boîte */
     .card, .fiche, .fiche-header, .fiche-body, .fiche-block,
@@ -606,27 +611,54 @@
   /* ─── SUIVI PRÉSENCE ─── */
   .presence-grid {
     display: grid;
-    grid-template-columns: repeat(10, 1fr);
-    gap: 6px;
-    margin-bottom: 20px;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 10px;
+    margin-bottom: 8px;
   }
-  @media (max-width: 600px) { .presence-grid { grid-template-columns: repeat(5, 1fr); } }
   .presence-cell {
-    aspect-ratio: 1;
-    background: var(--green-ultra);
-    border-radius: 10px;
+    background: white;
+    border-radius: 14px;
     border: 2px solid #C8E6C9;
     display: flex;
     flex-direction: column;
     align-items: center;
-    justify-content: center;
-    font-family: 'Fredoka', sans-serif;
-    font-size: 16px;
-    font-weight: 600;
-    color: var(--green-dark);
-    cursor: default;
+    padding: 12px 8px 10px;
+    gap: 6px;
+    box-shadow: 2px 3px 10px rgba(27,94,32,.08);
   }
-  .presence-cell span { font-size: 10px; color: var(--text-muted); font-family: 'Nunito', sans-serif; font-weight: 600; }
+  .presence-num {
+    font-family: 'Fredoka', sans-serif;
+    font-size: 22px;
+    font-weight: 700;
+    color: var(--green-dark);
+    line-height: 1;
+  }
+  .presence-label {
+    font-size: 10px;
+    font-weight: 700;
+    color: var(--muted);
+    letter-spacing: .5px;
+    text-transform: uppercase;
+  }
+  .presence-check {
+    width: 34px; height: 34px;
+    border-radius: 8px;
+    border: 2px solid #C8E6C9;
+    background: var(--green-ultra);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 18px;
+    color: transparent; /* vide = à cocher */
+  }
+  .presence-sig {
+    width: 100%;
+    border-top: 1.5px solid #E8F5E9;
+    padding-top: 6px;
+    font-size: 9px;
+    color: var(--muted);
+    text-align: center;
+    font-weight: 600;
+    letter-spacing: .5px;
+  }
 
   /* ─── AUTO-ÉVAL ─── */
   .eval-table { width: 100%; border-collapse: collapse; }
@@ -1853,30 +1885,18 @@
 
   <div class="card">
     <div class="card-title">Mes séances réalisées</div>
+    <p style="font-size:13px;color:#5A7A5A;margin-bottom:14px">Le formateur coche la case ✓ et signe après chaque séance.</p>
     <div class="presence-grid">
-      <div class="presence-cell s1" style="color:white"><span style="color:rgba(255,255,255,0.8)">S1</span></div>
-      <div class="presence-cell s2" style="color:white"><span style="color:rgba(255,255,255,0.8)">S2</span></div>
-      <div class="presence-cell s3" style="color:white"><span style="color:rgba(255,255,255,0.8)">S3</span></div>
-      <div class="presence-cell s4" style="color:white"><span style="color:rgba(255,255,255,0.8)">S4</span></div>
-      <div class="presence-cell s5" style="color:white"><span style="color:rgba(255,255,255,0.8)">S5</span></div>
-      <div class="presence-cell s6" style="color:white"><span style="color:rgba(255,255,255,0.8)">S6</span></div>
-      <div class="presence-cell s7" style="color:white"><span style="color:rgba(255,255,255,0.8)">S7</span></div>
-      <div class="presence-cell s8" style="color:white"><span style="color:rgba(255,255,255,0.8)">S8</span></div>
-      <div class="presence-cell s9" style="color:white"><span style="color:rgba(255,255,255,0.8)">S9</span></div>
-      <div class="presence-cell s10" style="color:#1B5E20"><span>S10</span></div>
-    </div>
-    <p style="font-size:12px;color:#5A7A5A;margin-top:8px">Demandez à votre formateur de signer chaque case après votre présence.</p>
-    <div style="margin-top:16px;display:grid;grid-template-columns:repeat(10,1fr);gap:6px">
-      <div style="text-align:center;font-size:11px;color:#5A7A5A">Sig.<br>___</div>
-      <div style="text-align:center;font-size:11px;color:#5A7A5A">Sig.<br>___</div>
-      <div style="text-align:center;font-size:11px;color:#5A7A5A">Sig.<br>___</div>
-      <div style="text-align:center;font-size:11px;color:#5A7A5A">Sig.<br>___</div>
-      <div style="text-align:center;font-size:11px;color:#5A7A5A">Sig.<br>___</div>
-      <div style="text-align:center;font-size:11px;color:#5A7A5A">Sig.<br>___</div>
-      <div style="text-align:center;font-size:11px;color:#5A7A5A">Sig.<br>___</div>
-      <div style="text-align:center;font-size:11px;color:#5A7A5A">Sig.<br>___</div>
-      <div style="text-align:center;font-size:11px;color:#5A7A5A">Sig.<br>___</div>
-      <div style="text-align:center;font-size:11px;color:#5A7A5A">Sig.<br>___</div>
+      <div class="presence-cell"><div class="presence-num">1</div><div class="presence-label">Séance</div><div class="presence-check"></div><div class="presence-sig">Signature</div></div>
+      <div class="presence-cell"><div class="presence-num">2</div><div class="presence-label">Séance</div><div class="presence-check"></div><div class="presence-sig">Signature</div></div>
+      <div class="presence-cell"><div class="presence-num">3</div><div class="presence-label">Séance</div><div class="presence-check"></div><div class="presence-sig">Signature</div></div>
+      <div class="presence-cell"><div class="presence-num">4</div><div class="presence-label">Séance</div><div class="presence-check"></div><div class="presence-sig">Signature</div></div>
+      <div class="presence-cell"><div class="presence-num">5</div><div class="presence-label">Séance</div><div class="presence-check"></div><div class="presence-sig">Signature</div></div>
+      <div class="presence-cell"><div class="presence-num">6</div><div class="presence-label">Séance</div><div class="presence-check"></div><div class="presence-sig">Signature</div></div>
+      <div class="presence-cell"><div class="presence-num">7</div><div class="presence-label">Séance</div><div class="presence-check"></div><div class="presence-sig">Signature</div></div>
+      <div class="presence-cell"><div class="presence-num">8</div><div class="presence-label">Séance</div><div class="presence-check"></div><div class="presence-sig">Signature</div></div>
+      <div class="presence-cell"><div class="presence-num">9</div><div class="presence-label">Séance</div><div class="presence-check"></div><div class="presence-sig">Signature</div></div>
+      <div class="presence-cell" style="border-color:#4CAF50;"><div class="presence-num" style="color:#1B5E20">10</div><div class="presence-label">Séance</div><div class="presence-check" style="border-color:#4CAF50"></div><div class="presence-sig">Signature</div></div>
     </div>
   </div>
 
