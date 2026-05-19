@@ -84,6 +84,14 @@
     .no-print, .site-header { display: none !important; }
     a { color: inherit !important; text-decoration: none !important; }
 
+    /* 4b ─ Séparateurs et sauts de page forcés supprimés en impression
+            Les mini-headers avec .page-break créaient des grandes zones blanches */
+    .sep { display: none !important; }
+    .page-break:not(.cover) {
+      break-before: auto !important;
+      page-break-before: auto !important;
+    }
+
     /* 5 ─ Éléments décoratifs qui causaient le débordement */
     .cover::before, .cover::after, .tdj-card::before {
       display: none !important;
