@@ -1,0 +1,572 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>INSER ASAF — QCM Langue Française A2</title>
+<link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;500;600;700&family=Nunito:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --g1: #1B5E20; --g2: #2E7D32; --g3: #388E3C;
+    --g4: #4CAF50; --g5: #A5D6A7; --g6: #E8F5E9; --g7: #F1F8E9;
+    --red: #C62828; --red-l: #FFEBEE;
+    --correct: #2E7D32; --correct-l: #E8F5E9;
+    --wrong: #C62828; --wrong-l: #FFEBEE;
+    --text: #1A2E1A; --muted: #5A7A5A;
+    --white: #fff;
+    --r: 18px; --rs: 12px;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'Nunito', sans-serif; background: var(--g7); color: var(--text); min-height: 100vh; }
+  h1,h2,h3,h4 { font-family: 'Fredoka', sans-serif; }
+
+  /* NAV */
+  nav {
+    background: var(--g1); padding: 12px 24px;
+    display: flex; align-items: center; justify-content: space-between;
+    box-shadow: 0 2px 12px rgba(0,0,0,.25); position: sticky; top: 0; z-index: 50;
+  }
+  .nav-logo { font-family:'Fredoka',sans-serif; font-size:20px; font-weight:700; color:#fff; letter-spacing:1px; }
+  .nav-sub  { font-size:10px; color:#A5D6A7; letter-spacing:2px; font-weight:600; }
+  .nav-back {
+    background: rgba(255,255,255,.15); border: 1.5px solid rgba(255,255,255,.3);
+    color: #fff; padding: 7px 16px; border-radius: 20px; font-size:13px;
+    font-weight:700; font-family:'Fredoka',sans-serif; cursor:pointer;
+    text-decoration:none; transition: background 200ms;
+  }
+  .nav-back:hover { background: rgba(255,255,255,.25); }
+
+  /* HERO */
+  .hero {
+    background: linear-gradient(135deg, var(--g1), var(--g2));
+    text-align:center; padding: 48px 24px 40px; color:#fff;
+  }
+  .hero-emoji { font-size:56px; display:block; margin-bottom:12px; }
+  .hero h1 { font-size:36px; font-weight:700; margin-bottom:8px; }
+  .hero p  { color:#C8E6C9; font-size:15px; max-width:480px; margin:0 auto 20px; }
+  .hero-chips { display:flex; gap:10px; justify-content:center; flex-wrap:wrap; }
+  .chip {
+    background:rgba(255,255,255,.15); border:1.5px solid rgba(255,255,255,.25);
+    color:#fff; padding:6px 16px; border-radius:20px; font-size:12px;
+    font-weight:700; font-family:'Fredoka',sans-serif;
+  }
+
+  /* LAYOUT */
+  .container { max-width:740px; margin:0 auto; padding:32px 20px 80px; }
+
+  /* PROGRESS */
+  .progress-bar-wrap {
+    background:#fff; border-radius:var(--r); padding:20px 24px;
+    box-shadow:4px 6px 18px rgba(27,94,32,.12); margin-bottom:28px;
+    border:2px solid rgba(76,175,80,.12);
+  }
+  .progress-top { display:flex; justify-content:space-between; align-items:center; margin-bottom:10px; }
+  .progress-label { font-family:'Fredoka',sans-serif; font-size:15px; color:var(--g1); font-weight:600; }
+  .progress-count { font-size:13px; color:var(--muted); font-weight:700; }
+  .progress-track { height:10px; background:var(--g6); border-radius:10px; overflow:hidden; }
+  .progress-fill  {
+    height:100%; background:linear-gradient(90deg,var(--g2),var(--g4));
+    border-radius:10px; transition:width .5s cubic-bezier(.4,0,.2,1);
+  }
+
+  /* THEME BADGE */
+  .theme-badge {
+    display:inline-flex; align-items:center; gap:7px;
+    background:var(--g6); border:1.5px solid var(--g5);
+    color:var(--g1); padding:5px 14px; border-radius:20px;
+    font-size:12px; font-weight:700; font-family:'Fredoka',sans-serif;
+    margin-bottom:16px;
+  }
+
+  /* QUESTION CARD */
+  .q-card {
+    background:#fff; border-radius:var(--r); padding:28px;
+    box-shadow:6px 8px 24px rgba(27,94,32,.14); border:2px solid rgba(76,175,80,.12);
+    animation: fadeSlide .35s ease;
+  }
+  @keyframes fadeSlide {
+    from { opacity:0; transform:translateY(14px); }
+    to   { opacity:1; transform:translateY(0); }
+  }
+  .q-text { font-size:18px; font-weight:700; color:var(--text); line-height:1.4; margin-bottom:22px; }
+
+  /* OPTIONS */
+  .options { display:flex; flex-direction:column; gap:10px; }
+  .opt {
+    display:flex; align-items:center; gap:14px;
+    padding:14px 18px; border-radius:var(--rs);
+    border:2px solid #C8E6C9; background:var(--g7);
+    cursor:pointer; transition:border-color 180ms, background 180ms, transform 150ms;
+    font-size:15px; font-weight:600; color:var(--text);
+    -webkit-user-select:none; user-select:none;
+  }
+  .opt:hover:not(.disabled) { border-color:var(--g3); background:var(--g6); transform:translateX(4px); }
+  .opt-letter {
+    width:32px; height:32px; border-radius:50%; flex-shrink:0;
+    background:var(--g5); color:var(--g1); font-family:'Fredoka',sans-serif;
+    font-weight:700; font-size:15px; display:flex; align-items:center; justify-content:center;
+    transition:background 180ms, color 180ms;
+  }
+  /* States */
+  .opt.correct   { border-color:var(--correct); background:var(--correct-l); }
+  .opt.correct .opt-letter { background:var(--correct); color:#fff; }
+  .opt.wrong     { border-color:var(--wrong); background:var(--wrong-l); }
+  .opt.wrong .opt-letter { background:var(--wrong); color:#fff; }
+  .opt.revealed  { border-color:var(--correct); background:var(--correct-l); opacity:.75; }
+  .opt.revealed .opt-letter { background:var(--correct); color:#fff; }
+  .opt.disabled  { cursor:default; }
+
+  /* FEEDBACK */
+  .feedback {
+    margin-top:16px; padding:14px 18px; border-radius:var(--rs);
+    display:none; align-items:flex-start; gap:12px; font-size:14px; line-height:1.5;
+  }
+  .feedback.show  { display:flex; animation:fadeSlide .25s ease; }
+  .feedback.ok    { background:var(--correct-l); border-left:4px solid var(--correct); color:#1B4332; }
+  .feedback.ko    { background:var(--wrong-l);   border-left:4px solid var(--wrong);   color:#7F1D1D; }
+  .feedback-icon  { font-size:20px; flex-shrink:0; }
+  .feedback strong { font-weight:700; }
+
+  /* NEXT BTN */
+  .btn-next {
+    display:none; width:100%; margin-top:20px; padding:14px;
+    background:linear-gradient(135deg,var(--g1),var(--g2));
+    color:#fff; border:none; border-radius:var(--rs);
+    font-family:'Fredoka',sans-serif; font-size:17px; font-weight:600;
+    cursor:pointer; transition:opacity 200ms, transform 150ms;
+    box-shadow:0 4px 14px rgba(27,94,32,.3);
+  }
+  .btn-next:hover { opacity:.9; transform:translateY(-2px); }
+  .btn-next.show  { display:block; animation:fadeSlide .3s ease; }
+
+  /* SCORE SCREEN */
+  .score-screen {
+    display:none; background:#fff; border-radius:var(--r);
+    padding:40px 32px; text-align:center;
+    box-shadow:6px 8px 24px rgba(27,94,32,.14); border:2px solid rgba(76,175,80,.12);
+  }
+  .score-screen.show { display:block; animation:fadeSlide .4s ease; }
+  .score-circle {
+    width:130px; height:130px; border-radius:50%;
+    background:linear-gradient(135deg,var(--g1),var(--g4));
+    display:flex; flex-direction:column; align-items:center; justify-content:center;
+    margin:0 auto 24px; color:#fff;
+    box-shadow:0 8px 24px rgba(27,94,32,.35);
+  }
+  .score-num   { font-family:'Fredoka',sans-serif; font-size:42px; font-weight:700; line-height:1; }
+  .score-denom { font-size:13px; opacity:.85; font-weight:600; }
+  .score-title { font-family:'Fredoka',sans-serif; font-size:28px; color:var(--g1); margin-bottom:8px; }
+  .score-msg   { font-size:15px; color:var(--muted); margin-bottom:28px; max-width:400px; margin-left:auto; margin-right:auto; }
+
+  .score-detail {
+    background:var(--g7); border-radius:var(--rs); padding:16px;
+    margin-bottom:24px; text-align:left;
+  }
+  .score-detail-title { font-family:'Fredoka',sans-serif; font-size:15px; color:var(--g1); margin-bottom:12px; }
+  .score-row {
+    display:flex; align-items:center; justify-content:space-between;
+    padding:7px 0; border-bottom:1px solid #E8F5E9; font-size:13px;
+  }
+  .score-row:last-child { border:none; }
+  .score-dot { width:10px; height:10px; border-radius:50%; flex-shrink:0; margin-right:8px; }
+  .score-row-left { display:flex; align-items:center; }
+
+  .btn-restart {
+    background:linear-gradient(135deg,var(--g1),var(--g2));
+    color:#fff; border:none; border-radius:var(--rs);
+    font-family:'Fredoka',sans-serif; font-size:17px; font-weight:600;
+    padding:14px 32px; cursor:pointer; transition:opacity 200ms, transform 150ms;
+    box-shadow:0 4px 14px rgba(27,94,32,.3); margin-right:10px;
+  }
+  .btn-restart:hover { opacity:.9; transform:translateY(-2px); }
+  .btn-home {
+    background:var(--g6); color:var(--g1); border:2px solid var(--g5);
+    border-radius:var(--rs); font-family:'Fredoka',sans-serif; font-size:17px;
+    font-weight:600; padding:13px 24px; cursor:pointer;
+    transition:background 200ms, transform 150ms; text-decoration:none; display:inline-block;
+  }
+  .btn-home:hover { background:var(--g5); transform:translateY(-2px); }
+
+  /* SCORE STARS */
+  .stars { font-size:36px; margin-bottom:16px; letter-spacing:4px; }
+
+  @media (max-width:600px) {
+    .hero h1 { font-size:26px; }
+    .q-text   { font-size:15px; }
+    .opt      { font-size:14px; padding:12px 14px; }
+    .score-circle { width:110px; height:110px; }
+    .score-num { font-size:34px; }
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <div>
+    <div class="nav-logo">INSER ASAF</div>
+    <div class="nav-sub">AIDE FÉDÉRATION DEPUIS 1984</div>
+  </div>
+  <a href="/" class="nav-back">← Retour au livret</a>
+</nav>
+
+<div class="hero">
+  <span class="hero-emoji">🧠</span>
+  <h1>QCM — Langue Française</h1>
+  <p>Testez vos connaissances sur les 10 thèmes de l'atelier</p>
+  <div class="hero-chips">
+    <span class="chip">Niveau A2</span>
+    <span class="chip">20 questions</span>
+    <span class="chip">Interactif</span>
+    <span class="chip">Seine-Saint-Denis</span>
+  </div>
+</div>
+
+<div class="container">
+
+  <!-- PROGRESS -->
+  <div class="progress-bar-wrap" id="progressWrap">
+    <div class="progress-top">
+      <span class="progress-label" id="progressLabel">Question 1 sur 20</span>
+      <span class="progress-count" id="scoreTrack">Score : 0 / 0</span>
+    </div>
+    <div class="progress-track">
+      <div class="progress-fill" id="progressFill" style="width:0%"></div>
+    </div>
+  </div>
+
+  <!-- QUESTION -->
+  <div id="quizArea">
+    <div class="theme-badge" id="themeBadge">📚 Thème</div>
+    <div class="q-card" id="qCard">
+      <div class="q-text" id="qText"></div>
+      <div class="options" id="optionsBox"></div>
+      <div class="feedback" id="feedback">
+        <span class="feedback-icon" id="feedbackIcon"></span>
+        <div id="feedbackText"></div>
+      </div>
+      <button class="btn-next" id="btnNext" onclick="nextQuestion()"></button>
+    </div>
+  </div>
+
+  <!-- SCORE -->
+  <div class="score-screen" id="scoreScreen">
+    <div class="stars" id="scoreStars"></div>
+    <div class="score-circle">
+      <span class="score-num" id="scoreNum">0</span>
+      <span class="score-denom" id="scoreDenom">/ 20</span>
+    </div>
+    <div class="score-title" id="scoreTitle"></div>
+    <div class="score-msg" id="scoreMsg"></div>
+    <div class="score-detail" id="scoreDetail"></div>
+    <button class="btn-restart" onclick="startQuiz()">🔄 Recommencer</button>
+    <a href="/" class="btn-home">📖 Retour au livret</a>
+  </div>
+
+</div>
+
+<script>
+const QUESTIONS = [
+  // ─── SÉANCE 1 : Se présenter ───
+  {
+    theme: "🪪 Séance 1 — Se présenter",
+    q: "Comment dit-on votre date de naissance en français ?",
+    opts: ["Je suis né(e) le 15 mars 1985", "Mon âge est 15-3-1985", "Je nais le mars quinze", "Date : 85/03/15"],
+    correct: 0,
+    explication: "On dit « Je suis né(e) le [jour] [mois] [année] ». Exemple : Je suis né le 15 mars 1985."
+  },
+  {
+    theme: "🪪 Séance 1 — Se présenter",
+    q: "Quelle expression utilise-t-on pour dire qu'on est marié(e) ?",
+    opts: ["Je suis célibataire", "Je suis marié(e)", "Je suis divorcé(e)", "Je suis veuf/veuve"],
+    correct: 1,
+    explication: "« Je suis marié(e) » signifie que vous avez un(e) époux/épouse. Célibataire = sans partenaire, divorcé(e) = séparé(e) officiellement."
+  },
+  // ─── SÉANCE 2 : Mon parcours ───
+  {
+    theme: "🌍 Séance 2 — Mon parcours de vie",
+    q: "Quelle phrase indique quand vous êtes arrivé(e) en France ?",
+    opts: ["Je vais en France bientôt", "Je suis arrivé(e) en France en 2019", "La France est mon pays", "J'habite ici depuis demain"],
+    correct: 1,
+    explication: "Pour dire quand vous êtes arrivé(e), on utilise « Je suis arrivé(e) en France en [année] »."
+  },
+  {
+    theme: "🌍 Séance 2 — Mon parcours de vie",
+    q: "Comment dit-on la ville où vous êtes né(e) ?",
+    opts: ["Mon lieu de naissance est Dakar", "J'ai habité Dakar", "Je connais Dakar", "Dakar est une ville"],
+    correct: 0,
+    explication: "On dit « Mon lieu de naissance est [ville] » ou « Je suis né(e) à [ville] »."
+  },
+  // ─── SÉANCE 3 : Logement ───
+  {
+    theme: "🏠 Séance 3 — Logement",
+    q: "Qu'est-ce qu'un « loyer » ?",
+    opts: ["Le nom du propriétaire", "La somme d'argent payée chaque mois pour habiter", "Le nom de la rue", "Le nombre de pièces"],
+    correct: 1,
+    explication: "Le loyer est la somme d'argent que vous payez chaque mois à votre propriétaire pour habiter dans votre logement."
+  },
+  {
+    theme: "🏠 Séance 3 — Logement",
+    q: "Un appartement avec une pièce principale + une cuisine s'appelle ?",
+    opts: ["Un F3", "Un studio", "Une villa", "Un T4"],
+    correct: 1,
+    explication: "Un studio est un appartement avec une seule pièce principale + cuisine et salle de bain. F1/T1 = une chambre + salon. F2/T2 = deux pièces."
+  },
+  // ─── SÉANCE 4 : Santé ───
+  {
+    theme: "🏥 Séance 4 — Santé",
+    q: "Quel numéro appelle-t-on en cas d'urgence médicale ?",
+    opts: ["17", "18", "15", "115"],
+    correct: 2,
+    explication: "Le 15 est le SAMU (urgences médicales). Le 17 = police, le 18 = pompiers, le 115 = SAMU Social (sans-abri)."
+  },
+  {
+    theme: "🏥 Séance 4 — Santé",
+    q: "Quelle phrase utilise-t-on pour prendre un rendez-vous médical ?",
+    opts: ["J'ai besoin d'une ordonnance", "Je voudrais prendre un rendez-vous s'il vous plaît", "Où est la pharmacie ?", "Mon médecin est absent"],
+    correct: 1,
+    explication: "Pour prendre un rendez-vous, on dit : « Je voudrais prendre un rendez-vous avec le docteur, s'il vous plaît. »"
+  },
+  // ─── SÉANCE 5 : Administration ───
+  {
+    theme: "🏛 Séance 5 — Administration",
+    q: "Quelle administration s'occupe du titre de séjour ?",
+    opts: ["La mairie", "La CAF", "La préfecture", "France Travail"],
+    correct: 2,
+    explication: "La préfecture gère les titres de séjour et la nationalisation. La mairie gère l'état civil. La CAF verse les allocations. France Travail aide pour l'emploi."
+  },
+  {
+    theme: "🏛 Séance 5 — Administration",
+    q: "Qu'est-ce qu'une « convocation » ?",
+    opts: ["Un document d'identité", "Une lettre qui vous demande de vous présenter à un lieu précis", "Un formulaire à remplir", "Un reçu de paiement"],
+    correct: 1,
+    explication: "Une convocation est une lettre officielle qui vous oblige à vous présenter à une administration à une date et une heure précises."
+  },
+  // ─── SÉANCE 6 : Titre de séjour ───
+  {
+    theme: "⭐ Séance 6 — Titre de séjour",
+    q: "Qu'est-ce qu'un récépissé ?",
+    opts: ["Le titre de séjour définitif", "Un document provisoire en attendant le titre de séjour", "Un acte de naissance", "Une quittance de loyer"],
+    correct: 1,
+    explication: "Le récépissé est un document provisoire remis en attendant que votre titre de séjour soit prêt. Il prouve que votre demande est en cours."
+  },
+  {
+    theme: "⭐ Séance 6 — Titre de séjour",
+    q: "Comment s'appelle le site officiel pour faire une demande de titre de séjour en ligne ?",
+    opts: ["Ameli.fr", "CAF.fr", "ANEF", "FranceTravail.fr"],
+    correct: 2,
+    explication: "L'ANEF (Administration Numérique pour les Étrangers en France) est le site officiel pour faire les demandes de titre de séjour en ligne."
+  },
+  {
+    theme: "⭐ Séance 6 — Titre de séjour",
+    q: "Quelle est la durée d'une carte de séjour temporaire ?",
+    opts: ["6 mois", "1 an", "5 ans", "10 ans"],
+    correct: 1,
+    explication: "La carte de séjour temporaire est valable 1 an. La carte pluriannuelle dure 2 à 4 ans. La carte de résident dure 10 ans."
+  },
+  // ─── SÉANCE 7 : Emploi ───
+  {
+    theme: "💼 Séance 7 — Trouver un emploi",
+    q: "Qu'est-ce qu'un CDI ?",
+    opts: ["Un Contrat De Formation", "Un Contrat De durée Indéterminée (contrat sans fin prévue)", "Un Contrat D'Intérim", "Un Certificat De Travail"],
+    correct: 1,
+    explication: "CDI = Contrat à Durée Indéterminée. C'est le contrat de travail le plus stable, sans date de fin. CDD = Contrat à Durée Déterminée (avec une date de fin)."
+  },
+  {
+    theme: "💼 Séance 7 — Trouver un emploi",
+    q: "Quel est l'ancien nom de France Travail ?",
+    opts: ["La CAF", "L'ANEF", "Pôle Emploi", "L'URSSAF"],
+    correct: 2,
+    explication: "France Travail est l'ancien Pôle Emploi, renommé en 2024. C'est l'organisme qui aide à trouver un emploi et verse les allocations chômage."
+  },
+  // ─── SÉANCE 8 : Vie dans la cité ───
+  {
+    theme: "🚇 Séance 8 — Vie dans la cité",
+    q: "Comment demande-t-on son chemin poliment ?",
+    opts: ["Dites-moi où est le métro !", "Excusez-moi, pour aller au métro s'il vous plaît ?", "Métro, c'est où ?", "Je veux le métro"],
+    correct: 1,
+    explication: "On commence toujours par « Excusez-moi » puis on pose la question avec « s'il vous plaît ». C'est poli et professionnel."
+  },
+  {
+    theme: "🚇 Séance 8 — Vie dans la cité",
+    q: "Qu'est-ce qu'un abonnement Navigo ?",
+    opts: ["Un plan de Paris", "Une carte de transport illimitée en Île-de-France", "Un billet de train", "Une application téléphone"],
+    correct: 1,
+    explication: "Le Pass Navigo est une carte magnétique qui permet de voyager en illimité dans les transports en commun d'Île-de-France (métro, bus, RER, tramway)."
+  },
+  // ─── SÉANCE 9 : Expression libre ───
+  {
+    theme: "💬 Séance 9 — Expression libre",
+    q: "Comment dit-on qu'on ne comprend pas en français ?",
+    opts: ["Je ne parle pas", "Je ne comprends pas, pouvez-vous répéter s'il vous plaît ?", "Silence", "Non merci"],
+    correct: 1,
+    explication: "La phrase complète et polie est : « Je ne comprends pas, pouvez-vous répéter plus lentement, s'il vous plaît ? » N'hésitez jamais à demander !"
+  },
+  // ─── VOCABULAIRE ADMINISTRATIF ───
+  {
+    theme: "📋 Lexique — Vocabulaire administratif",
+    q: "Qu'est-ce qu'une « pièce justificative » ?",
+    opts: ["Un puzzle", "Un document officiel prouvant une information", "Une pièce de monnaie", "Un reçu de caisse"],
+    correct: 1,
+    explication: "Une pièce justificative est un document officiel qui prouve quelque chose : un justificatif de domicile prouve votre adresse, un bulletin de salaire prouve vos revenus."
+  },
+  {
+    theme: "📋 Lexique — Vocabulaire administratif",
+    q: "Que signifie remplir un formulaire « Cerfa » ?",
+    opts: ["Envoyer un email à la mairie", "Compléter un document officiel de l'administration française", "Appeler le service client", "Imprimer un document"],
+    correct: 1,
+    explication: "Un formulaire Cerfa est un document administratif officiel. On le remplit avec ses informations personnelles pour faire une demande auprès d'une administration."
+  }
+];
+
+let current = 0, score = 0, answered = 0, results = [];
+
+function startQuiz() {
+  current = 0; score = 0; answered = 0; results = [];
+  document.getElementById('quizArea').style.display = 'block';
+  document.getElementById('progressWrap').style.display = 'block';
+  document.getElementById('scoreScreen').classList.remove('show');
+  showQuestion();
+}
+
+function showQuestion() {
+  const q = QUESTIONS[current];
+  document.getElementById('themeBadge').textContent = q.theme;
+  document.getElementById('qText').textContent = q.q;
+
+  // Mélanger les options
+  const shuffled = q.opts.map((o, i) => ({text: o, orig: i})).sort(() => Math.random() - .5);
+  const correctShuffled = shuffled.findIndex(o => o.orig === q.correct);
+
+  const box = document.getElementById('optionsBox');
+  box.innerHTML = '';
+  const letters = ['A','B','C','D'];
+  shuffled.forEach((o, i) => {
+    const div = document.createElement('div');
+    div.className = 'opt';
+    div.innerHTML = `<span class="opt-letter">${letters[i]}</span><span>${o.text}</span>`;
+    div.dataset.idx = o.orig;
+    div.dataset.shuffled = i;
+    div.dataset.correct = (o.orig === q.correct);
+    div.addEventListener('click', () => selectAnswer(div, correctShuffled, shuffled));
+    box.appendChild(div);
+  });
+
+  // Reset feedback + btn
+  const fb = document.getElementById('feedback');
+  fb.className = 'feedback';
+  document.getElementById('btnNext').className = 'btn-next';
+
+  // Progress
+  const pct = (current / QUESTIONS.length) * 100;
+  document.getElementById('progressFill').style.width = pct + '%';
+  document.getElementById('progressLabel').textContent = `Question ${current + 1} sur ${QUESTIONS.length}`;
+  document.getElementById('scoreTrack').textContent = `Score : ${score} / ${answered}`;
+
+  // Re-animate card
+  const card = document.getElementById('qCard');
+  card.style.animation = 'none';
+  card.offsetHeight;
+  card.style.animation = '';
+}
+
+function selectAnswer(chosen, correctShuffled, shuffled) {
+  const opts = document.querySelectorAll('.opt');
+  if (chosen.classList.contains('disabled')) return;
+
+  // Disable all
+  opts.forEach(o => o.classList.add('disabled'));
+
+  const isCorrect = chosen.dataset.correct === 'true';
+  const q = QUESTIONS[current];
+  answered++;
+
+  if (isCorrect) {
+    chosen.classList.add('correct');
+    score++;
+    showFeedback(true, `<strong>Bravo !</strong> ${q.explication}`);
+  } else {
+    chosen.classList.add('wrong');
+    // Reveal correct
+    opts.forEach(o => {
+      if (o.dataset.correct === 'true') o.classList.add('revealed');
+    });
+    showFeedback(false, `<strong>Pas tout à fait.</strong> ${q.explication}`);
+  }
+
+  results.push({ q: q.q, correct: isCorrect, theme: q.theme });
+  document.getElementById('scoreTrack').textContent = `Score : ${score} / ${answered}`;
+
+  const btn = document.getElementById('btnNext');
+  btn.textContent = current < QUESTIONS.length - 1 ? 'Question suivante →' : 'Voir mon score 🏆';
+  btn.className = 'btn-next show';
+}
+
+function showFeedback(ok, html) {
+  const fb = document.getElementById('feedback');
+  document.getElementById('feedbackIcon').textContent = ok ? '✅' : '❌';
+  document.getElementById('feedbackText').innerHTML = html;
+  fb.className = 'feedback show ' + (ok ? 'ok' : 'ko');
+}
+
+function nextQuestion() {
+  current++;
+  if (current >= QUESTIONS.length) {
+    showScore();
+  } else {
+    showQuestion();
+  }
+}
+
+function showScore() {
+  document.getElementById('quizArea').style.display = 'none';
+  document.getElementById('progressWrap').style.display = 'none';
+
+  const pct = score / QUESTIONS.length;
+  let stars, title, msg, color;
+
+  if (pct >= .9)      { stars='⭐⭐⭐'; title='Excellent !';    color='#1B5E20'; msg='Vous maîtrisez très bien le vocabulaire de l\'atelier. Bravo !'; }
+  else if (pct >= .7) { stars='⭐⭐';   title='Très bien !';    color='#2E7D32'; msg='Vous avez de très bonnes bases. Continuez à pratiquer !'; }
+  else if (pct >= .5) { stars='⭐';     title='Bien essayé !';  color='#388E3C'; msg='Vous progressez ! Relisez les fiches des thèmes difficiles.'; }
+  else                { stars='💪';     title='Continuez !';    color='#4CAF50'; msg='Pas de souci, relisez votre livret et recommencez. Chaque essai est un progrès !'; }
+
+  document.getElementById('scoreStars').textContent = stars;
+  document.getElementById('scoreNum').textContent = score;
+  document.getElementById('scoreDenom').textContent = '/ ' + QUESTIONS.length;
+  document.getElementById('scoreTitle').textContent = title;
+  document.getElementById('scoreTitle').style.color = color;
+  document.getElementById('scoreMsg').textContent = msg;
+
+  // Détail par thème
+  const byTheme = {};
+  results.forEach(r => {
+    if (!byTheme[r.theme]) byTheme[r.theme] = {ok:0, total:0};
+    byTheme[r.theme].total++;
+    if (r.correct) byTheme[r.theme].ok++;
+  });
+  let detailHtml = '<div class="score-detail-title">Résultats par thème</div>';
+  Object.entries(byTheme).forEach(([theme, data]) => {
+    const ok = data.ok === data.total;
+    const partial = data.ok > 0 && data.ok < data.total;
+    const dotColor = ok ? '#4CAF50' : (partial ? '#FFA000' : '#EF5350');
+    const icon = ok ? '✅' : (partial ? '⚠️' : '❌');
+    detailHtml += `
+      <div class="score-row">
+        <div class="score-row-left">
+          <div class="score-dot" style="background:${dotColor}"></div>
+          <span style="font-size:12px">${theme.replace(/^[^\s]+\s/,'')}</span>
+        </div>
+        <span style="font-size:13px;font-weight:700;color:${dotColor}">${icon} ${data.ok}/${data.total}</span>
+      </div>`;
+  });
+  document.getElementById('scoreDetail').innerHTML = detailHtml;
+
+  const ss = document.getElementById('scoreScreen');
+  ss.classList.add('show');
+  ss.scrollIntoView({behavior:'smooth', block:'start'});
+}
+
+// Lance le quiz au chargement
+startQuiz();
+</script>
+</body>
+</html>
