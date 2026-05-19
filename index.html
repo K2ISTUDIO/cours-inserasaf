@@ -112,18 +112,45 @@
       page-break-inside: auto !important;
     }
 
-    /* 8 ─ Éléments jamais coupés */
-    .fiche, .card, .info-box, .obj-item, .rule-item, .fiche-block,
-    .phrase-modele, .mini-header, .section-header, .seance-chip,
-    .ressource-item, .notes-page, .presence-cell, .word-item,
-    .highlight-box, .vocab-tdj-item {
+    /* 8 ─ Grands conteneurs : autoriser la coupure naturelle
+           (break-inside: avoid sur des blocs trop hauts cause le chevauchement) */
+    .fiche, .card, .notes-page, .highlight-box {
+      break-inside: auto !important;
+      page-break-inside: auto !important;
+    }
+
+    /* 8b ─ Petits éléments atomiques : jamais coupés */
+    .fiche-header, .fiche-block, .phrase-modele, .obj-item, .rule-item,
+    .seance-chip, .ressource-item, .presence-cell, .word-item,
+    .vocab-tdj-item, .info-box, .section-header, .mini-header {
       break-inside: avoid !important;
       page-break-inside: avoid !important;
+    }
+
+    /* 8c ─ fiche-body : passer en block pour éviter
+           les chevauchements liés au CSS Grid en impression */
+    .fiche-body {
+      display: block !important;
+    }
+    .fiche-block {
+      margin-bottom: 8px !important;
+      width: 100% !important;
+    }
+    .phrase-modele {
+      display: flex !important;
+      width: 100% !important;
+      margin-top: 8px !important;
     }
 
     /* 9 ─ Titres jamais seuls en bas de page */
     .mini-header, .section-header, .lexique-title,
     .card-title, .fiche-title, .fiche-header, .notes-title {
+      break-after: avoid !important;
+      page-break-after: avoid !important;
+    }
+
+    /* 9b ─ fiche-header collé à son contenu */
+    .fiche-header {
       break-after: avoid !important;
       page-break-after: avoid !important;
     }
