@@ -35,216 +35,195 @@
 
   h1, h2, h3, h4 { font-family: 'Fredoka', sans-serif; }
 
-  /* ─── PRINT ─── */
+  /* ════════════════════════════════════════
+     IMPRESSION A4 PORTRAIT — règles propres
+     Le navigateur gère la largeur via @page.
+     On ne fixe PAS de width en mm sur body/container.
+  ════════════════════════════════════════ */
   @page {
     size: A4 portrait;
-    margin: 13mm 11mm 13mm 11mm;
+    margin: 15mm 12mm;          /* zone utile : 186mm × 267mm */
   }
 
   @media print {
-    /* ── 1. Forcer les couleurs et fonds à l'impression ── */
-    * {
+
+    /* 1 ─ Couleurs & fonds forcés */
+    *, *::before, *::after {
       -webkit-print-color-adjust: exact !important;
       print-color-adjust: exact !important;
       box-sizing: border-box !important;
-      max-width: 100% !important;
     }
 
-    /* ── ANTI-DÉBORDEMENT GLOBAL ── */
-    html, body {
-      overflow: hidden !important;
+    /* 2 ─ Base document : largeur naturelle, pas de scroll */
+    html {
+      font-size: 10pt;
     }
-    /* Supprimer les pseudo-éléments décoratifs (cercles 500px/300px/200px)
-       qui débordent hors page via position:absolute */
-    .cover::before, .cover::after,
-    .tdj-card::before {
-      display: none !important;
-    }
-    /* Tout élément positionné en absolu dans la cover est clippé */
-    .cover {
-      overflow: hidden !important;
-      position: relative !important;
-    }
-    /* Aucun élément ne sort de son conteneur */
-    .card, .fiche, .fiche-header, .fiche-body, .fiche-block,
-    .highlight-box, .tdj-card, .notes-page, .lexique-section,
-    .word-grid, .grid-2, .grid-3, .programme-grid,
-    .presence-grid, .eval-table, .comp-table,
-    .ressource-item, .cover-badges {
-      overflow: hidden !important;
-    }
-
-    /* ── 2. Base HTML/body ── */
-    html { font-size: 10.5pt; }
     body {
-      width: 188mm;
-      max-width: 188mm;
+      width: 100% !important;
+      max-width: 100% !important;
+      margin: 0 !important;
+      padding: 0 !important;
       background: white !important;
-      font-size: 10.5pt;
-      line-height: 1.5;
+      font-size: 10pt !important;
+      line-height: 1.5 !important;
+      overflow-x: hidden !important;
       orphans: 3;
       widows: 3;
     }
 
-    /* ── 3. Container ── */
+    /* 3 ─ Container pleine largeur sans padding latéral */
     .container {
-      max-width: 188mm !important;
-      width: 188mm !important;
-      padding: 0 !important;
+      width: 100% !important;
+      max-width: 100% !important;
+      margin: 0 !important;
+      padding: 0 0 20px 0 !important;
       overflow: hidden !important;
     }
 
-    /* ── 4. Cacher les éléments web ── */
+    /* 4 ─ Éléments web masqués */
     .no-print, .site-header { display: none !important; }
     a { color: inherit !important; text-decoration: none !important; }
 
-    /* ── 5. Sauts de page explicites ── */
-    .page-break  { break-before: page !important; page-break-before: always !important; }
-    .cover       { break-after:  page !important; page-break-after:  always !important;
-                   height: 277mm !important; min-height: unset !important;
-                   padding: 40mm 15mm !important; }
+    /* 5 ─ Éléments décoratifs qui causaient le débordement */
+    .cover::before, .cover::after, .tdj-card::before {
+      display: none !important;
+    }
 
-    /* ── 6. La tdj-card démarre sur une nouvelle page (trop haute sinon) ── */
+    /* 6 ─ Cover : exactement une page A4 (267mm = 297 - 15 - 15) */
+    .cover {
+      width: 100% !important;
+      height: 267mm !important;
+      min-height: unset !important;
+      padding: 35mm 10mm !important;
+      overflow: hidden !important;
+      break-after: page !important;
+      page-break-after: always !important;
+    }
+
+    /* 7 ─ Sauts de page */
+    .page-break {
+      break-before: page !important;
+      page-break-before: always !important;
+    }
     .tdj-card {
-      break-before: page !important; page-break-before: always !important;
-      break-inside: auto !important; page-break-inside: auto !important;
+      break-before: page !important;
+      page-break-before: always !important;
+      break-inside: auto !important;
+      page-break-inside: auto !important;
     }
-    .vocab-tdj-item { break-inside: avoid !important; page-break-inside: avoid !important; }
 
-    /* ── 7. Éléments qui ne doivent JAMAIS être coupés ── */
-    .fiche, .card, .info-box, .obj-item, .rule-item,
-    .fiche-block, .phrase-modele, .mini-header,
-    .section-header, .seance-chip, .ressource-item,
-    .notes-page, .eval-check, .presence-cell {
+    /* 8 ─ Éléments jamais coupés */
+    .fiche, .card, .info-box, .obj-item, .rule-item, .fiche-block,
+    .phrase-modele, .mini-header, .section-header, .seance-chip,
+    .ressource-item, .notes-page, .presence-cell, .word-item,
+    .highlight-box, .vocab-tdj-item {
       break-inside: avoid !important;
       page-break-inside: avoid !important;
     }
 
-    /* Les lexique-sections sont grandes : on autorise le break à l'intérieur
-       mais on protège chaque word-item individuellement */
-    .word-item {
-      break-inside: avoid !important;
-      page-break-inside: avoid !important;
-    }
-
-    /* highlight-box : autorise le break si trop grande, mais protège chaque ligne */
-    .highlight-box {
-      break-inside: avoid !important;
-      page-break-inside: avoid !important;
-    }
-
-    /* ── 8. Titres : jamais seuls en bas de page ── */
+    /* 9 ─ Titres jamais seuls en bas de page */
     .mini-header, .section-header, .lexique-title,
     .card-title, .fiche-title, .fiche-header, .notes-title {
       break-after: avoid !important;
       page-break-after: avoid !important;
     }
 
-    /* ── 9. Supprimer ombres (lenteur + artefacts print) ── */
+    /* 10 ─ Supprimer ombres et simplifier bordures */
     * { box-shadow: none !important; text-shadow: none !important; }
     .card, .fiche, .word-item, .info-box, .ressource-item {
       border: 1px solid #C8E6C9 !important;
     }
 
-    /* ── 10. Grilles adaptées A4 (188mm utiles) ── */
-    /* 2 colonnes max partout sauf exceptions */
-    .grid-2      { grid-template-columns: 1fr 1fr !important; gap: 10px !important; }
-    .grid-3      { grid-template-columns: 1fr 1fr !important; gap: 10px !important; }
-    .fiche-body  { grid-template-columns: 1fr 1fr !important; gap: 10px !important; }
-    .vocab-tdj   { grid-template-columns: 1fr 1fr !important; gap: 8px  !important; }
+    /* 11 ─ Largeurs : tout en % ou fr, rien en px absolu */
+    .grid-2, .grid-3   { grid-template-columns: 1fr 1fr !important; gap: 8px !important; }
+    .fiche-body        { grid-template-columns: 1fr 1fr !important; gap: 8px !important; }
+    .vocab-tdj         { grid-template-columns: 1fr 1fr !important; gap: 6px !important; }
+    .word-grid         { grid-template-columns: 1fr 1fr !important; gap: 6px !important; }
+    .programme-grid    { grid-template-columns: repeat(5, 1fr) !important; gap: 5px !important; }
+    .presence-grid     { grid-template-columns: repeat(5, 1fr) !important; gap: 6px !important; }
 
-    /* Programme : 5 colonnes — 188/5 ≈ 37mm chacune, OK */
-    .programme-grid { grid-template-columns: repeat(5, 1fr) !important; gap: 7px !important; }
-
-    /* Lexique : 2 colonnes (au lieu de 3) pour éviter le débordement */
-    .word-grid { grid-template-columns: 1fr 1fr !important; gap: 7px !important; }
-
-    /* Présence : 5 colonnes sur 2 lignes — plus lisible et plus robuste */
-    .presence-grid { grid-template-columns: repeat(5, 1fr) !important; gap: 8px !important; }
-
-    /* ── 11. Overflow et wrapping ── */
-    td, th, .word-fr, .word-ex, .fiche-block ul li,
-    .ressource-label, .ressource-detail, .obj-text,
-    .vocab-tdj-word, .vocab-tdj-def {
+    /* 12 ─ Overflow : tout contenu dans sa boîte */
+    .card, .fiche, .fiche-header, .fiche-body, .fiche-block,
+    .highlight-box, .tdj-card, .notes-page, .word-grid,
+    .grid-2, .grid-3, .programme-grid, .presence-grid,
+    .ressource-item, .cover-badges, .eval-table, .comp-table {
+      overflow: hidden !important;
+      max-width: 100% !important;
+    }
+    td, th, li, p, span, div {
+      max-width: 100% !important;
       word-break: break-word !important;
       overflow-wrap: break-word !important;
-      overflow: hidden !important;
     }
 
-    /* ── 12. Tables ── */
+    /* 13 ─ Tables */
     .eval-table, .comp-table {
       width: 100% !important;
       table-layout: fixed !important;
       border-collapse: collapse !important;
+      font-size: 9pt !important;
     }
-    .eval-table th, .eval-table td {
-      font-size: 9.5pt !important;
-      padding: 6px 8px !important;
-      word-break: break-word !important;
-    }
-    .comp-table th, .comp-table td {
-      font-size: 9.5pt !important;
-      padding: 6px 8px !important;
-      word-break: break-word !important;
-    }
-    /* Colonne principale des tables : largeur fixe */
-    .eval-table th:first-child, .eval-table td:first-child { width: 52% !important; }
+    .eval-table th:first-child,  .eval-table td:first-child  { width: 52% !important; }
     .eval-table th:not(:first-child), .eval-table td:not(:first-child) { width: 16% !important; text-align: center !important; }
-    .comp-table th:first-child, .comp-table td:first-child { width: 30% !important; }
-    .comp-table th:nth-child(2), .comp-table td:nth-child(2) { width: 15% !important; }
-    .comp-table th:last-child, .comp-table td:last-child { width: 55% !important; }
+    .comp-table th:first-child,  .comp-table td:first-child  { width: 28% !important; }
+    .comp-table th:nth-child(2), .comp-table td:nth-child(2) { width: 14% !important; }
+    .comp-table th:last-child,   .comp-table td:last-child   { width: 58% !important; }
+    .eval-table th, .eval-table td,
+    .comp-table th, .comp-table td { padding: 5px 7px !important; word-break: break-word !important; }
 
-    /* ── 13. Tailles de police ── */
-    .cover-logo      { font-size: 44pt !important; }
-    .cover-title     { font-size: 26pt !important; }
-    .cover-subtitle  { font-size: 13pt !important; }
-    .cover-since     { font-size: 9pt !important; }
-    .cover-dept      { font-size: 10pt !important; }
-    .section-title   { font-size: 17pt !important; }
-    .fiche-title     { font-size: 13pt !important; }
-    .card-title      { font-size: 12pt !important; }
-    .fiche-block-title { font-size: 9pt !important; }
-    .fiche-block ul li { font-size: 9pt !important; }
-    .lexique-title   { font-size: 11pt !important; }
-    .word-fr         { font-size: 10pt !important; }
-    .word-ex         { font-size: 9pt  !important; }
-    .ressource-label { font-size: 10pt !important; }
-    .ressource-detail{ font-size: 9pt  !important; }
-    .obj-text        { font-size: 10pt !important; }
-    .badge           { font-size: 10pt !important; padding: 4px 12px !important; }
-    .seance-num      { font-size: 20pt !important; }
-    .seance-label    { font-size: 8pt  !important; }
-    .phrase-modele-text { font-size: 10pt !important; }
-    .tdj-card h3     { font-size: 18pt !important; }
-    .tdj-card p      { font-size: 9.5pt !important; }
-    .vocab-tdj-word  { font-size: 10pt !important; }
-    .vocab-tdj-def   { font-size: 9pt  !important; }
+    /* 14 ─ Typographie compacte */
+    .cover-logo       { font-size: 40pt !important; }
+    .cover-title      { font-size: 24pt !important; }
+    .cover-subtitle   { font-size: 12pt !important; }
+    .cover-since      { font-size: 8.5pt !important; }
+    .cover-dept       { font-size: 9pt  !important; max-width: 100% !important; }
+    .section-title    { font-size: 16pt !important; }
+    .fiche-title      { font-size: 12pt !important; }
+    .card-title       { font-size: 11pt !important; }
+    .fiche-block-title{ font-size: 8.5pt !important; }
+    .fiche-block ul li{ font-size: 8.5pt !important; }
+    .lexique-title    { font-size: 11pt !important; }
+    .word-fr          { font-size: 9.5pt !important; }
+    .word-ex          { font-size: 8.5pt !important; }
+    .ressource-label  { font-size: 9.5pt !important; }
+    .ressource-detail { font-size: 8.5pt !important; }
+    .obj-text         { font-size: 9.5pt !important; }
+    .badge            { font-size: 9.5pt !important; padding: 3px 10px !important; }
+    .seance-num       { font-size: 18pt !important; }
+    .seance-label     { font-size: 7.5pt !important; line-height: 1.2 !important; }
+    .phrase-modele-text{ font-size: 9.5pt !important; }
+    .tdj-card h3      { font-size: 16pt !important; }
+    .tdj-card p       { font-size: 9pt  !important; }
+    .vocab-tdj-word   { font-size: 9.5pt !important; }
+    .vocab-tdj-def    { font-size: 8.5pt !important; }
 
-    /* ── 14. Espacements compacts ── */
-    .section-header  { margin: 16px 0 10px !important; }
-    .sep             { margin: 14px 0 !important; }
-    .fiche           { margin-bottom: 14px !important; }
-    .card            { padding: 16px !important; margin-bottom: 12px !important; }
-    .fiche-body      { padding: 14px 16px 16px !important; }
-    .word-item       { padding: 7px 10px !important; }
-    .obj-item        { padding: 10px !important; margin-bottom: 7px !important; }
-    .rule-item       { padding: 9px 12px !important; margin-bottom: 6px !important; }
-    .ressource-item  { padding: 10px 12px !important; margin-bottom: 7px !important; }
-    .ressource-icon  { width: 36px !important; height: 36px !important; font-size: 16px !important; }
-    .mini-header     { padding: 7px 14px !important; margin-top: 16px !important; }
-    .section-icon    { width: 40px !important; height: 40px !important; font-size: 18px !important; }
+    /* 15 ─ Espacements réduits */
+    .section-header   { margin: 12px 0 8px !important; }
+    .sep              { margin: 10px 0 !important; }
+    .fiche            { margin-bottom: 12px !important; }
+    .card             { padding: 14px !important; margin-bottom: 10px !important; }
+    .fiche-body       { padding: 12px 14px 14px !important; }
+    .fiche-block      { padding: 10px !important; }
+    .word-item        { padding: 6px 8px !important; }
+    .obj-item         { padding: 8px 10px !important; margin-bottom: 6px !important; }
+    .rule-item        { padding: 7px 10px !important; margin-bottom: 5px !important; }
+    .ressource-item   { padding: 8px 10px !important; margin-bottom: 6px !important; }
+    .ressource-icon   { width: 32px !important; height: 32px !important; font-size: 15px !important; flex-shrink: 0 !important; }
+    .mini-header      { padding: 6px 12px !important; margin-top: 12px !important; }
+    .section-icon     { width: 36px !important; height: 36px !important; font-size: 16px !important; }
 
-    /* ── 15. Notes ── */
-    .notes-page      { min-height: unset !important; padding: 14px !important; }
-    .notes-title     { font-size: 12pt !important; margin-bottom: 12px !important; padding-bottom: 7px !important; }
-    .line-row        { height: 24px !important; border-bottom: 1px solid #C8E6C9 !important; }
+    /* 16 ─ Notes */
+    .notes-page  { min-height: unset !important; padding: 12px !important; }
+    .notes-title { font-size: 11pt !important; margin-bottom: 10px !important; padding-bottom: 6px !important; }
+    .line-row    { height: 22px !important; border-bottom: 1px solid #C8E6C9 !important; }
 
-    /* ── 16. Cover badges ── */
-    .cover-badges    { gap: 6px !important; }
-    .cover-globe     { font-size: 50pt !important; margin-bottom: 12px !important; }
+    /* 17 ─ Cover */
+    .cover-globe  { font-size: 44pt !important; margin-bottom: 10px !important; }
+    .cover-badges { gap: 5px !important; flex-wrap: wrap !important; }
+    .cover-divider{ margin: 0 auto 20px !important; }
 
-    /* ── 17. Footer ── */
-    .site-footer     { margin-top: 16px !important; font-size: 8.5pt !important; padding: 14px !important; }
+    /* 18 ─ Footer */
+    .site-footer  { margin-top: 12px !important; font-size: 8pt !important; padding: 12px !important; }
   }
 
   /* ─── LAYOUT ─── */
