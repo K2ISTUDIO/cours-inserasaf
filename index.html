@@ -113,9 +113,15 @@
       break-before: page !important;
       page-break-before: always !important;
     }
-    .tdj-card {
+    /* Le saut de page est sur le wrapper qui contient mini-header + tdj-card + fiche6
+       pour qu'ils arrivent ensemble sur la même nouvelle page */
+    .tdj-section-wrap {
       break-before: page !important;
       page-break-before: always !important;
+    }
+    .tdj-card {
+      break-before: auto !important;
+      page-break-before: auto !important;
       break-inside: auto !important;
       page-break-inside: auto !important;
     }
@@ -1409,7 +1415,8 @@
        FICHES SÉANCES 6-10
   ══════════════════════════════════════════ -->
 
-  <!-- Le saut de page est géré par tdj-card ci-dessous, pas par le mini-header -->
+  <!-- Mini-header + tdj-card groupés pour rester ensemble à l'impression -->
+  <div class="tdj-section-wrap">
   <div class="mini-header">
     <div class="mini-header-logo">INSER ASAF</div>
     <div class="mini-header-sep"></div>
@@ -1515,6 +1522,7 @@
       </div>
     </div>
   </div>
+  </div><!-- /tdj-section-wrap -->
 
   <!-- SÉANCE 7 -->
   <div class="fiche">
